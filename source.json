@@ -1,0 +1,9 @@
+{
+  "scrapers": [
+    {
+      "name": "Chess.com Fog of War",
+      "urlPattern": "chess.com/variants/fog-of-war"
+    }
+  ],
+  "file": "chesscom-fog-of-war.js"
+}
