@@ -113,10 +113,12 @@ test.describe('chess.com fog of war', () => {
     await expect(board.locator('.reader-chess-piece.white')).toHaveCount(0)
     await expect(board.locator('.reader-chess-piece.black')).toHaveCount(16)
     await expect(board.locator('.reader-chess-square.fogged')).toHaveCount(32)
-    // Drawn as chess.com draws it: its neo pieces, its squares' colours, and its fog over what is not seen.
-    await expect(board.locator('.reader-chess-piece').first()).toHaveAttribute('src', /4e4c4b/)
+    // Drawn as chess.com draws it, with its own files, which source.json gives the addresses of: its neo pieces, and its
+    // fog over what is not seen. The squares' colours are the extension's own, which are chess.com's.
+    await expect(board.locator('.reader-chess-piece').first()).toHaveAttribute('src', /^https:\/\/images\.chesscomfiles\.com\/chess-themes\/pieces\/neo\/150\/b[kqrbnp]\.png$/)
+    expect(await board.locator('.reader-chess-piece').first().evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThan(0)
     await expect(board.locator('.reader-chess-square:not(.dark):not(.fogged)').first()).toHaveCSS('background-color', 'rgb(238, 238, 210)')
-    await expect(board.locator('.reader-chess-square.fogged').first()).toHaveCSS('background-image', /fog.*\.png/)
+    await expect(board.locator('.reader-chess-square.fogged').first()).toHaveCSS('background-image', /chess\.com\/bundles\/web\/images\/variants\/misc\/fog-bg-new\.png/)
     await board.screenshot({ path: process.env.SCREENSHOT_PATH || 'test-results/chess-fog.png' })
     await app.page.screenshot({ path: 'test-results/chess-read.png' })
   })

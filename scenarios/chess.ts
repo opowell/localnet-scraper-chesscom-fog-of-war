@@ -120,9 +120,30 @@ export function archiveUrl(player: string) {
   return `${FOG}/archive&p=${player}&gameType=2pc&daysBack=0-9999`
 }
 
+const PIECE_NAMES: Record<string, string> = { k: 'K', q: 'Q', r: 'R', b: 'B', n: 'N', p: 'P' }
+
+/**
+ * Stands in for chess.com's own files, which source.json gives as its look (its neo pieces and its fog), as the stand-in
+ * site reaches no real one: each piece a disc in its colour (white #f8f8f8, black #4e4c4b) with its letter, and the fog
+ * a grey sheet.
+ */
+export function serveLook(site: Parameters<Scenario['run']>[0]['site']) {
+  const svg = (body: string) => ({ headers: { 'Content-Type': 'image/svg+xml' }, body: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${body}</svg>` })
+  for (const color of ['w', 'b']) {
+    for (const [type, letter] of Object.entries(PIECE_NAMES)) {
+      const [fill, ink] = color === 'w' ? ['#f8f8f8', '#4e4c4b'] : ['#4e4c4b', '#f8f8f8']
+      site.serve(`https://images.chesscomfiles.com/chess-themes/pieces/neo/150/${color}${type}.png`, svg(
+        `<circle cx="50" cy="50" r="38" fill="${fill}" stroke="#222" stroke-width="4"/><text x="50" y="64" font-size="40" font-family="sans-serif" text-anchor="middle" fill="${ink}">${letter}</text>`,
+      ))
+    }
+  }
+  site.serve('https://www.chess.com/bundles/web/images/variants/misc/fog-bg-new.png', svg('<rect width="100" height="100" fill="#8a8a8a"/><circle cx="30" cy="40" r="25" fill="#9a9a9a"/><circle cx="75" cy="70" r="30" fill="#7c7c7c"/>'))
+}
+
 export const chess: Scenario = {
-  about: 'a Fog of War game from chess.com, scraped and open in Read, its board ready to play back',
+  about: 'a Fog of War game from chess.com, scraped and open in Read, its board ready to play back in chess.com\'s look',
   async run({ app, site }) {
+    serveLook(site)
     site.serve(GAME, gamePage())
     await app.scrape(GAME)
     await app.go(`#/?q=${encodeURIComponent(`item="${GAME}"`)}&v=record`)

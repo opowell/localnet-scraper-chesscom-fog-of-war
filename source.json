@@ -5,5 +5,33 @@
       "urlPattern": "chess.com/variants/fog-of-war"
     }
   ],
-  "file": "chesscom-fog-of-war.js"
+  "file": "chesscom-fog-of-war.js",
+  "chess": {
+    "name": "chess.com",
+    "pieces": [
+      {
+        "name": "Neo",
+        "image": "https://images.chesscomfiles.com/chess-themes/pieces/neo/150/{color}{type}.png"
+      },
+      {
+        "name": "Alpha",
+        "image": "https://images.chesscomfiles.com/chess-themes/pieces/alpha/150/{color}{type}.png"
+      },
+      {
+        "name": "Classic",
+        "image": "https://images.chesscomfiles.com/chess-themes/pieces/classic/150/{color}{type}.png"
+      }
+    ],
+    "sounds": {
+      "move": "https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-self.mp3",
+      "capture": "https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/capture.mp3",
+      "castle": "https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/castle.mp3",
+      "promote": "https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/promote.mp3",
+      "check": "https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-check.mp3",
+      "start": "https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/game-start.mp3",
+      "end": "https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/game-end.mp3",
+      "lowTime": "https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/tenseconds.mp3"
+    },
+    "fog": "https://www.chess.com/bundles/web/images/variants/misc/fog-bg-new.png"
+  }
 }
