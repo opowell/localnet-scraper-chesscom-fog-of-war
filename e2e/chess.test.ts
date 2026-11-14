@@ -1,3 +1,4 @@
+import { choose } from '#e2e/choose.ts'
 import { expect, test } from '#e2e/fixtures.ts'
 import { FOG, GAME, MOVES, archivePage, archiveUrl, chess, fogGame, gamePage, stuckLeaderboardPage } from '../scenarios/chess.ts'
 
@@ -99,7 +100,7 @@ test.describe('chess.com fog of war', () => {
     const bar = panel.getByRole('slider', { name: 'Moment of the game' })
     const barWidth = async () => (await bar.boundingBox())!.width
     const playingWidth = await barWidth()
-    await panel.getByRole('combobox').first().selectOption('10')
+    await choose(panel.getByRole('button', { name: 'Speed' }), '10')
     await expect(panel.locator('.reader-chess-move.current')).toHaveText(/^Bxd5/, { timeout: MOVES.reduce((sum, [, thought]) => sum + thought, 0) / 10 + 5000 })
     await expect(panel.getByRole('button', { name: 'Play' })).toBeVisible()
     expect(await barWidth()).toBe(playingWidth)
@@ -108,7 +109,7 @@ test.describe('chess.com fog of war', () => {
 
     // As black saw it: what white's pieces stand on, black could not see, at the start.
     await app.page.keyboard.press('Home')
-    await panel.getByRole('combobox').nth(1).selectOption('b')
+    await choose(panel.getByRole('button', { name: 'Fog' }), 'b')
     await expect(board.locator('.reader-chess-piece.white')).toHaveCount(0)
     await expect(board.locator('.reader-chess-piece.black')).toHaveCount(16)
     await expect(board.locator('.reader-chess-square.fogged')).toHaveCount(32)
